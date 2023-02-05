@@ -3,8 +3,11 @@ import { MdKeyboardArrowDown, MdOutlineFavoriteBorder, MdOutlinePerson, MdOutlin
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import Cart from './Cart'
+import { useSelector } from 'react-redux'
 
 const Navbar = () => {
+
+  const products = useSelector(state => state.cart.products)
 
   const [cart, showCart] = useState(false)
 
@@ -45,7 +48,7 @@ const Navbar = () => {
             <MdOutlineFavoriteBorder className='iconSize' />
             <div className="cartIcon" onClick={() => showCart(!cart)}>
               <MdOutlineShoppingCart className='iconSize' />
-              <span>0</span>
+              <span>{products.length}</span>
             </div>
           </div>
         </div>

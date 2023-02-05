@@ -1,59 +1,46 @@
 import '../styles/Cart.scss'
 import { MdOutlineDelete }  from 'react-icons/md'
+import { useDispatch, useSelector } from 'react-redux'
+import { removeItem, resetCart } from '../redux/cartReducer'
 
 const Cart = () => {
 
-  const data = [
-    {
-      id: 1,
-      img: "https://images.pexels.com/photos/2065200/pexels-photo-2065200.jpeg?auto=compress&cs=tinysrgb&w=1600",
-      title: "long Sleeve Graphics T Shirt",
-      desc: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit atque sunt sequi iusto voluptates distinctio tempora soluta quidem? Reprehenderit doloremque iusto quasi ex, eum labore dicta quas commodi ipsa numquam.",
-      isNew: true,
-      odlPrice: 19,
-      price: 12
-    },
-    {
-      id: 2,
-      img: "https://images.pexels.com/photos/1759622/pexels-photo-1759622.jpeg?auto=compress&cs=tinysrgb&w=1600",
-      title: "Shoes are Shoes",
-      desc: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit atque sunt sequi iusto voluptates distinctio tempora soluta quidem? Reprehenderit doloremque iusto quasi ex, eum labore dicta quas commodi ipsa numquam.",
-      isNew: true,
-      odlPrice: 19,
-      price: 12
-    },
-    {
-      id: 3,
-      img: "https://images.pexels.com/photos/1759622/pexels-photo-1759622.jpeg?auto=compress&cs=tinysrgb&w=1600",
-      title: "Shoes are Shoes",
-      desc: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit atque sunt sequi iusto voluptates distinctio tempora soluta quidem? Reprehenderit doloremque iusto quasi ex, eum labore dicta quas commodi ipsa numquam.",
-      isNew: true,
-      odlPrice: 19,
-      price: 12
-    },
-  ]
+  const BACKEND_URL = process.env.REACT_APP_API_URL
+
+  const products = useSelector(state => state.cart.products)
+
+  const dispatch = useDispatch()
+
+  const totalPrice = () => {
+    let total = 0
+    products.forEach(item => total += item.quantity * item.price)
+    return total.toFixed(2)
+  }
+
   return (
     <div className='cart'>
       <div className="top">
         <h1>Products in Your Cart</h1>
-        <span className="reset">Reset Cart</span>
+        <span className="reset" onClick={()=> dispatch(resetCart())}>Reset Cart</span>
       </div>
-      {data.map(item => (
-        <div className="item" key={item.id}>
-          <img src={item.img} alt="img" />
-          <div className="details">
-            <h1>{item.title}</h1>
-            <p>{item.desc.substring(0, 100)}...</p>
-            <div className="price">1 x ${item.price}</div>
+      {products?.map(item => (
+        <div className='itemCard' key={item.id}>
+          <div className="item">
+            <img src={BACKEND_URL + item.img} alt="img" />
+            <div className="details">
+              <h1>{item.title}</h1>
+              <p>{item.desc.substring(0, 100)}...</p>
+              <div className="price">{item.quantity} x ${item.price}</div>
+            </div>
           </div>
-          <MdOutlineDelete style={{cursor: 'pointer'}} size={40} color='red' />
+            <span><MdOutlineDelete onClick={()=> dispatch(removeItem(item.id))} style={{cursor: 'pointer'}} size={30} color='red' /></span>
         </div>
       ))}
       <div className="total">
         <span>SUBTOTAL</span>
-        <span>$12</span>
+        <span>${totalPrice()}</span>
       </div>
-      <button>PROCEED TO CHECKOUT</button>
+      <button style={products.length ? { backgroundColor: '#2879fe' } : { backgroundColor: '#8a8a8a' }}>PROCEED TO CHECKOUT</button>
     </div>
   )
 }
