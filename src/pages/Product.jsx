@@ -17,7 +17,7 @@ const Product = () => {
 
   return (
     <>
-      {loading ? <h1 style={{textAlign: 'center'}}>Loading</h1> :
+      {loading ? <h1 style={{textAlign: 'center'}}>Loading</h1> : error ? <h1 style={{textAlign: 'center'}}>{error.message}</h1> :
         <div className='product'>
           <div className="left">
             <div className="images">
