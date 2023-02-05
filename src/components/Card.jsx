@@ -2,18 +2,21 @@ import { Link } from 'react-router-dom'
 import '../styles/Card.scss'
 
 const Card = ({item}) => {
+
+  const BACKEND_URL = process.env.REACT_APP_API_URL
+
   return (
     <Link to={`/product/${item.id}`} className='link'>
       <div className='card'>
         <div className="image">
-          {item.isNew && <span>New Season</span>}
-          <img src={item.img} alt="img" className="mainImg" />
-          {item.img2 && <img src={item.img2} alt="img" className="secondImg" />}
+          {item.attributes.isNew && <span>New Season</span>}
+          <img src={BACKEND_URL + item?.attributes.img.data.attributes.url} alt="img" className="mainImg" />
+          {item?.attributes.img2.data.attributes.url && <img src={BACKEND_URL + item?.attributes.img2.data.attributes.url} alt="img" className="secondImg" />}
         </div>
-        <h2>{item.title}</h2>
+        <h2>{item.attributes.title}</h2>
         <div className="prices">
-          <h3>${item.oldPrice}</h3>
-          <h3>${item.price}</h3>
+          {item.attributes.oldPrice && <h3 className='oldPrice'>${item.attributes.oldPrice}</h3>}
+          <h3>${item.attributes.price}</h3>
         </div>
       </div>
     </Link>

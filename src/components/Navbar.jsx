@@ -1,8 +1,13 @@
 import '../styles/Navbar.scss'
 import { MdKeyboardArrowDown, MdOutlineFavoriteBorder, MdOutlinePerson, MdOutlineShoppingCart, MdSearch } from "react-icons/md"
 import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import Cart from './Cart'
 
 const Navbar = () => {
+
+  const [cart, showCart] = useState(false)
+
   return (
     <div className='navbar'>
       <div className="wrapper">
@@ -12,13 +17,13 @@ const Navbar = () => {
             <MdKeyboardArrowDown />
           </div>
           <div className="item">
-            <Link className='link' to='/products/1'>Women</Link>
+            <Link className='link' to='/products/3'>Women</Link>
           </div>
           <div className="item">
-            <Link className='link' to='/products/2'>Men</Link>
+            <Link className='link' to='/products/1'>Men</Link>
           </div>
           <div className="item">
-            <Link className='link' to='/products/3'>Children</Link>
+            <Link className='link' to='/products/2'>Children</Link>
           </div>
         </div>
         <div className="center">
@@ -38,13 +43,14 @@ const Navbar = () => {
             <MdSearch className='iconSize' />
             <MdOutlinePerson className='iconSize' />
             <MdOutlineFavoriteBorder className='iconSize' />
-            <div className="cartIcon">
+            <div className="cartIcon" onClick={() => showCart(!cart)}>
               <MdOutlineShoppingCart className='iconSize' />
               <span>0</span>
             </div>
           </div>
         </div>
       </div>
+      {cart && <Cart />}
     </div>
   )
 }
